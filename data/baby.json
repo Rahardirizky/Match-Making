@@ -1,0 +1,30 @@
+[
+    {
+        "username": "maniesmandja",
+        "email": "maniesmandja@baby.com",
+        "password": "sa09dad",
+        "userType": "Baby",
+        "membershipLevel": "Basic"
+    },
+    {
+        "username": "cantikjelitua",
+        "email": "cantikjelitua@baby.com",
+        "password": "alsdj98a",
+        "userType": "Baby",
+        "membershipLevel": "Premium"
+    },
+    {
+        "username": "macantutul",
+        "email": "macantutul@baby.com",
+        "password": "12498hff",
+        "userType": "Baby",
+        "membershipLevel": "Platinum"
+    },
+    {
+        "username": "miss_alice18",
+        "email": "miss_alice18@baby.com",
+        "password": "n13j49p8",
+        "userType": "Baby",
+        "membershipLevel": "VIP"
+    }
+  ]

@@ -1,0 +1,42 @@
+[
+    {
+        "firstName": "Hanum",
+        "lastName": "Man",
+        "age": "22",
+        "gender": "Female",
+        "shortBio": "Looking for someone to take care of me",
+        "expectedMonthlyAllowance": 7500000,
+        "location": "Bekasi",
+        "BabyId" : 1
+    },
+    {
+        "firstName": "Dewi",
+        "lastName": "Kwang An",
+        "age": "42",
+        "gender": "Female",
+        "shortBio": "Living my life to the fullest",
+        "expectedMonthlyAllowance": 20000000,
+        "location": "Depok",
+        "BabyId" : 2
+    },
+    {
+        "firstName": "Putri",
+        "lastName": "Kenanga",
+        "age": "27",
+        "gender": "Female",
+        "shortBio": "Young, wild, and free",
+        "expectedMonthlyAllowance": 35000000,
+        "location": "Bogor",
+        "BabyId" : 3
+    },
+    {
+        "firstName": "Wendy",
+        "lastName": "McDonald",
+        "age": "35",
+        "gender": "Female",
+        "shortBio": "Expensive gal for an expensive guy",
+        "expectedMonthlyAllowance": 65000000,
+        "location": "Jakarta",
+        "BabyId" : 4
+    }
+  ]
