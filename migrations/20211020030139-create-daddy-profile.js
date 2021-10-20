@@ -14,8 +14,8 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      age: {
-        type: Sequelize.INTEGER
+      dateOfBirth: {
+        type: Sequelize.DATE
       },
       gender: {
         type: Sequelize.STRING
@@ -29,8 +29,18 @@ module.exports = {
       location: {
         type: Sequelize.STRING
       },
+      gpsLocation: {
+        type: Sequelize.STRING
+      },
       DaddyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model : {
+            tableName: 'Daddies'
+          }, key:"id"
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,

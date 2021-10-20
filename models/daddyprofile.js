@@ -16,7 +16,15 @@ module.exports = (sequelize, DataTypes) => {
   DaddyProfile.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    age: DataTypes.INTEGER,
+    dateOfBirth: {
+      types: DataTypes.DATE,
+      get(field){
+        const value = this.getDataValue(field)
+        const today = new Date()
+        const date = new Date(value)
+        return today.getFullYear() - date.getFullYear()
+      },
+    },
     gender: DataTypes.STRING,
     shortBio: DataTypes.TEXT,
     monthlyBudget: DataTypes.STRING,

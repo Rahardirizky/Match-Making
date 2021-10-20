@@ -2,41 +2,41 @@
     {
         "firstName": "Bara",
         "lastName": "Irawan",
-        "age": "30",
+        "dateOfBirth": "1991-07-01",
         "gender": "Male",
         "shortBio": "Looking for a transactional relationship",
         "monthlyBudget": 5000000,
-        "location": "Jakarta",
+        "LocationId": 2,
         "DaddyId" : 1
     },
     {
         "firstName": "Dude",
         "lastName": "Hernia",
-        "age": "42",
+        "dateOfBirth": "1979-11-01",
         "gender": "Male",
         "shortBio": "In the search of love around the corner",
         "monthlyBudget": 14000000,
-        "location": "Bekasi",
+        "LocationId": 3,
         "DaddyId" : 2
     },
     {
         "firstName": "Hamish",
         "lastName": "Dawet",
-        "age": "50",
+        "dateOfBirth": "1971-10-04",
         "gender": "Male",
         "shortBio": "Widower with an attitude",
         "monthlyBudget": 25000000,
-        "location": "Bogor",
+        "LocationId": 4,
         "DaddyId" : 3
     },
     {
         "firstName": "Justin",
         "lastName": "DBeaver",
-        "age": "35",
+        "dateOfBirth": "1986-09-09",
         "gender": "Male",
         "shortBio": "Lover and provider",
         "monthlyBudget": 50000000,
-        "location": "Depok",
+        "LocationId": 1,
         "DaddyId" : 4
     }
-  ]
+]

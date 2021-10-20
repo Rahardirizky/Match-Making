@@ -9,10 +9,24 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       SugarDaddyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model : {
+            tableName: 'Daddies'
+          }, key:"id"
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       SugarBabyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model : {
+            tableName: 'Babies'
+          }, key:"id"
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,
