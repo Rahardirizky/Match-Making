@@ -1,17 +1,15 @@
 const router = require('express').Router()
-// const routerEmployee = require('./employee')
-// const routerStore = require('./store')
+const daddyRoutes = require('./daddyRoutes')
+const babyRoutes = require('./babyRoutes')
 
-router.get('/', (req, res) => res.send('landing page gan'))
+router.get('/', (req, res) => res.render('babyDetail'))
+router.get('/register', (req, res) => res.send('register page gan'))
+router.get('/login', (req, res) => res.send('login page gan'))
+router.get('/profile', (req, res) => res.send('login page gan'))
+router.get('/profile/edit', (req, res) => res.send('login page gan'))
+router.post('/profile/edit', (req, res) => res.send('login page gan'))
 
-// router.use("/stores", routerStore)
-// router.use("/employees", routerEmployee)
+router.use("/daddies", daddyRoutes)
+router.use("/babies", babyRoutes)
 
 module.exports = router
-
-/**
- * LIST UNTUK ROUTES GAN
- * 1. routes ke home
- * 2. login routes
- * 3. 
- */

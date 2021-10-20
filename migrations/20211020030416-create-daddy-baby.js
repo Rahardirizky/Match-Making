@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      SugarDaddyId: {
+      DaddyId: {
         type: Sequelize.INTEGER,
         references: {
           model : {
@@ -18,7 +18,7 @@ module.exports = {
         onUpdate: 'cascade',
         onDelete: 'cascade'
       },
-      SugarBabyId: {
+      BabyId: {
         type: Sequelize.INTEGER,
         references: {
           model : {
