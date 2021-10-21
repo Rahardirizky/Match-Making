@@ -23,7 +23,7 @@
             <a class="nav-link active" aria-current="page" href="#">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Babies</a>
+            <a class="nav-link active" aria-current="page" href="/babies">Babies</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/logout">Log Out</a>
@@ -52,7 +52,7 @@
                         <td class="align-middle"><%=el.Baby.username%></td>
                         <td class="align-middle"><%=el.getFullName%></td>
                         <td class="align-middle"><%=el.dateOfBirth%></td>
-                        <td class="align-middle"><%=el.expectedMonthlyAllowance%></td>
+                        <td class="align-middle"><%=currencyConverter(el.expectedMonthlyAllowance)%></td>
                         <td class="align-middle"><%=el.Location.name%></td>
                         <td class="align-middle"><a type="button" class="btn btn-secondary" href="/babies/<%=el.id%>">See Profile</a></td>
                     </tr>

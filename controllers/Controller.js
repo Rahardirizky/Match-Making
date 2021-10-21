@@ -1,68 +1,40 @@
 const { Baby, Daddy } = require('../models/index')
 const {comparePassword} = require('../helpers/bcrypt');
 const e = require('express');
+const {Op} = require('sequelize')
 
 class Controller {
   static register(req, res) {
     const {username, password, email, userType, membershipLevel} = req.body
-    console.log(req.body);
 
-    Daddy.findOne({
-      where: {
-        email
-      }
-    })
+    Daddy.findOne({where: {email}})
       .then(daddy => {
-        if(daddy) {
-          res.send('User Already Exist')
-        } else {
-          return Baby.findOne({
-            where: {
-              email
-            }
-          })
-        }
+        if(daddy) {res.send('Username already taken. Please register with a different one.')} 
+        else return Baby.findOne({where: {email}})
       })
       .then(baby => {
-        if(baby) {
-          res.send('User Already Exist')
-        } else {
-          if(userType === 'Daddy') {
-            return Daddy.create({username, password, email, userType, membershipLevel})
-          } else {
-            return Baby.create({username, password, email, userType, membershipLevel})
-          }
+        if(baby) {res.send('Username already taken. Please register with a different one.')} 
+        else {
+          if(userType === 'Daddy') return Daddy.create({username, password, email, userType, membershipLevel})
+          else return Baby.create({username, password, email, userType, membershipLevel})
         }
       })
       .then(() => {
         if(userType === 'Daddy') {
           req.session.hasLogin = 'Daddy'
-          res.redirect('/babies')
-        } else {
-          req.session.hasLogin = 'Baby'
-          res.redirect('/daddies')
-        }
+        } else {req.session.hasLogin = 'Baby'}
+        res.redirect('/profile')
       })
   }
 
   static login(req, res) {
-    const {email, password} = req.body
-    Daddy.findOne({
-      where: {
-        email
-      }
-    })
+    const {credentials, password} = req.body
+    Daddy.findOne({where: {[Op.or]: [{email: credentials}, {username: credentials}]}})
       .then(daddy => {
         if(daddy && comparePassword(password, daddy.password)) {
           req.session.hasLogin = 'Daddy'
           res.redirect('/babies')
-        } else {
-          return Baby.findOne({
-            where: {
-              email
-            }
-          })
-        }
+        } else return Baby.findOne({where: {[Op.or]: [{email: credentials}, {username: credentials}]}})
       }) 
       .then(baby => {
         if(baby && comparePassword(password, baby.password)) {

@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
+const {hashPassword} = require('../helpers/bcrypt')
+
 module.exports = (sequelize, DataTypes) => {
   class Daddy extends Model {
     static associate(models) {
