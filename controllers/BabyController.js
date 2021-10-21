@@ -1,9 +1,12 @@
-const { Baby, Daddy } = require('../models/index')
+const { BabyProfile, Daddy, Baby, Location } = require('../models/index')
 
 class BabyController {
   static getList(req, res) {
-    Baby.findAll()
+    BabyProfile.findAll({
+      include: [Baby, Location]
+    })
       .then(data => {
+        console.log(data);
         res.render('babies', {babies : data})
       })
       .catch(err => {
