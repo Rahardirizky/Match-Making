@@ -33,7 +33,7 @@ router.get('/login', (req, res) => {
 router.post('/login', Controller.login)
 router.use(authentication)
 router.get('/logout', Controller.logout)
-router.get('/profile/:username', (req, res) => res.send('login page gan'))
+router.get('/profile/:username', Controller.showUserProfile)
 router.get('/profile/:username/edit', (req, res) => res.send('login page gan'))
 router.post('/profile/:username/edit', (req, res) => res.send('login page gan'))
 

@@ -1,83 +1,117 @@
-const { Baby, Daddy } = require('../models/index')
-const { comparePassword } = require('../helpers/bcrypt');
-const e = require('express');
-const { Op } = require('sequelize');
-const { defaultValueSchemable } = require('sequelize/types/lib/utils');
+const {  
+  DaddyProfile,
+  Daddy,
+  Baby,
+  Location,
+  DaddyBaby,
+  BabyProfile
+} = require("../models/index");
+const { comparePassword } = require("../helpers/bcrypt");
+const e = require("express");
+const { Op } = require("sequelize");
 
 class Controller {
   static register(req, res) {
-    const { username, password, email, userType, membershipLevel } = req.body
+    const { username, password, email, userType, membershipLevel } = req.body;
+    const foundUser = username
 
     Daddy.findOne({ where: { email } })
-      .then(daddy => {
-        if (daddy) { res.send('Username already taken. Please register with a different one.') }
-        else return Baby.findOne({ where: { email } })
+      .then((daddy) => {
+        if (daddy) {
+          res.send("Username already taken. Please register with a different one.");
+        } else return Baby.findOne({ where: { email } });
       })
-      .then(baby => {
-        if (baby) { res.send('Username already taken. Please register with a different one.') }
-        else {
-          if (userType === 'Daddy') return Daddy.create({ username, password, email, userType, membershipLevel })
-          else return Baby.create({ username, password, email, userType, membershipLevel })
+      .then((baby) => {
+        if (baby) {
+          res.send("Username already taken. Please register with a different one.");
+        } else {
+          if (userType === "Daddy"){
+            return Daddy.create({username, password, email, userType, membershipLevel});
+          } else {
+            return Baby.create({username, password, email, userType, membershipLevel})
+          }
         }
       })
       .then(() => {
-        if (userType === 'Daddy') {
-          req.session.hasLogin = 'Daddy'
-        } else { req.session.hasLogin = 'Baby' }
-        res.redirect('/profile')
+        if (userType === "Daddy") {
+          req.session.hasLogin = "Daddy";
+        } else {
+          req.session.hasLogin = "Baby";
+        }
+        res.redirect(`/profile/${foundUser}`);
       })
+      .catch(err=> res.render(err))
   }
 
   static login(req, res) {
-    const { credentials, password } = req.body
-    Daddy.findOne({ where: { [Op.or]: [{ email: credentials }, { username: credentials }] } })
-      .then(daddy => {
+    const { credentials, password } = req.body;
+    Daddy.findOne({
+      where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
+    })
+      .then((daddy) => {
         if (daddy && comparePassword(password, daddy.password)) {
-          req.session.hasLogin = 'Daddy'
-          res.redirect(`/profile/${daddy.username}`)
-        } else return Baby.findOne({ where: { [Op.or]: [{ email: credentials }, { username: credentials }] } })
+          req.session.hasLogin = "Daddy"
+           const foundUser = daddy.username
+          res.redirect(`/profile/${foundUser}`);
+        } else
+          return Baby.findOne({
+            where: {[Op.or]: [{ email: credentials }, { username: credentials }]},
+          });
       })
-      .then(baby => {
+      .then((baby) => {
         if (baby && comparePassword(password, baby.password)) {
-          req.session.hasLogin = 'Baby'
-          res.redirect(`/profile/${baby.username}`)
+          req.session.hasLogin = "Baby";
+          res.redirect(`/daddies`);
         } else {
-          res.send('email or password is incorrect')
+          res.send("email or password is incorrect");
         }
       })
+      .catch(err=> res.render(err))
   }
   static showUserProfile(req, res) {
-    const { username } = req.params.username
+    const username  = req.params.username
+    console.log(username,'>>>username dari showuserprofile');
     Daddy.findOne({
       where: { username },
       include: [
         {
-          model: DaddyBaby, required: false, include: [
-            { model: Baby, required: true }]
+          model: DaddyBaby,
+          include: [{ model: Baby}],
         },
         {
-          model: DaddyProfile, required: true, include: [
-            { model: Location, required: true }]
-        }
-      ]
+          model: DaddyProfile,
+          include: [{ model: Location}],
+        },
+      ],
     })
-      .then(user => {
-        res.render('profile', { user })
-      } else return Baby.findOne({ where: { [Op.or]: [{ email: credentials }, { username: credentials }] } })
-  }) 
-      .then(baby => {
-    if(baby && comparePassword(password, baby.password)) {
-  req.session.hasLogin = 'Baby'
-  res.redirect(`/profile/${baby.username}`)
-} else {
-  res.send('email or password is incorrect')
-}
-      })
+    .then((userDaddy) => {
+      if (userDaddy) res.render("profile", { userDaddy });
+      else {
+        return Baby.findOne({
+          where: { username },
+          include: [
+            {
+              model: DaddyBaby,
+              include: [{ model: Daddy}],
+            },
+            {
+              model: BabyProfile,
+              include: [{ model: Location}],
+            },
+          ],
+        });
+      }
+    })
+    .then ((userBaby)=>{
+      if (userBaby) res.render("profile", { userBaby });
+    })
+    .catch(err=> res.render(err))
   }
+
   static logout(req, res) {
-  req.session.destroy()
-  res.redirect('/')
-}
+    req.session.destroy();
+    res.redirect("/");
+  }
 }
 
-module.exports = Controller
+module.exports = Controller;
