@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class BabyProfile extends Model {
     static associate(models) {
       BabyProfile.belongsTo(models.Baby)
+      BabyProfile.belongsTo(models.Location)
     }
     get getFullName (){
       return `${this.firstName} ${this.lastName}`
@@ -26,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     gender: DataTypes.STRING,
     shortBio: DataTypes.TEXT,
     expectedMonthlyAllowance: DataTypes.STRING,
+    gpsLocation: DataTypes.STRING,
     LocationId: DataTypes.INTEGER,
     BabyId: DataTypes.INTEGER,
   }, {

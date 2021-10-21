@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   Location.init({
     name: DataTypes.STRING,
-    gpsLocation: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Location',
