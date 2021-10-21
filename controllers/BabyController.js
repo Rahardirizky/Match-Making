@@ -10,15 +10,13 @@ const {
 
 class BabyController {
   static getBabyList(req, res) {
-    let {allowance} = req.query
-    allowance = allowance == undefined ? 0 : +allowance;
-    BabyProfile.getBabyByAllowance(allowance)
-      .then((babies) => {
-        console.log(babies);
-        res.render("babies", { babies, currencyConverter });
+    BabyProfile.findAll({
+      include: { all: true, nested: true },
+    })
+      .then((data) => {
+        res.render("babies", { babies: data, currencyConverter });
       })
       .catch((err) => {
-        console.log(err);
         res.send(err);
       });
   }

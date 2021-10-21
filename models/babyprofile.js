@@ -2,7 +2,9 @@
 const {
   Model
 } = require('sequelize');
-const {Op} = require('sequelize');
+const {Baby} = require('./baby')
+const {Location} = require('./location')
+const { Op } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class BabyProfile extends Model {
     static associate(models) {
@@ -22,11 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       return today.getFullYear() - date.getFullYear()
     }
     static getBabyByAllowance(allowance) {
-      return new Promise((res, rej) =>{
+      return new Promise((res, rej) => {
         let condition = allowance ? allowance : 0
-        BabyProfile.findAll({ where: {expectedMonthlyAllowance:{[Op.gte]:condition}}, order:[['expectedMonthlyAllowance', 'ASC']] })
-        .then((data) => res(data))
-        .catch((err) => rej(err));
+        BabyProfile.findAll({ 
+          where: { expectedMonthlyAllowance: { [Op.gte]: +condition } }, 
+          order: [['expectedMonthlyAllowance', 'ASC']], 
+          include:[Baby,Location] })
+          .then((data) => res(data))
+          .catch((err) => rej(err));
       })
     }
   };

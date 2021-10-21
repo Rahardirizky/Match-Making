@@ -3,7 +3,6 @@ const { DaddyProfile, Daddy, Baby, Location, DaddyBaby, BabyProfile } = require(
 
 class DaddyController {
   static getDaddyList(req, res) {
-    console.log(req.session);
     DaddyProfile.findAll({
       include: [
         {model: Daddy, required: true },
@@ -21,15 +20,12 @@ class DaddyController {
   static findDaddy(req, res){
     let DaddyId = req.params.id
     let daddy
-    DaddyProfile.findByPk(DaddyId, {
+    BabyProfile.findOne({
+      where: { DaddyId },
       include: [
-        {model: Daddy, required: true},
-        {model: Location,required: true},
+        { model: Daddy, required: true },
+        { model: Location, required: true },
       ],
-      // include: [
-      //   {model: DaddyProfile, required: true ,
-      //     include: [{model: Location,required: true}]},
-      // ],
     })
     .then((data) => {
       daddy = data
@@ -48,7 +44,6 @@ class DaddyController {
       res.render("daddyDetail", { daddy, babies, currencyConverter });
     })
     .catch((err) => {
-      console.log(err);
       res.send(err);
     });
   }

@@ -4,7 +4,7 @@ const {
   Baby,
   Location,
   DaddyBaby,
-  BabyProfile,
+  BabyProfile
 } = require("../models/index");
 const { comparePassword } = require("../helpers/bcrypt");
 const e = require("express");
@@ -13,21 +13,16 @@ const { Op } = require("sequelize");
 class Controller {
   static register(req, res) {
     const { username, password, email, userType, membershipLevel } = req.body;
-    const foundUser = username;
 
     Daddy.findOne({ where: { email } })
       .then((daddy) => {
         if (daddy) {
-          res.send(
-            "Username already taken. Please register with a different one."
-          );
+          res.send("Username already taken. Please register with a different one.");
         } else return Baby.findOne({ where: { email } });
       })
       .then((baby) => {
         if (baby) {
-          res.send(
-            "Username already taken. Please register with a different one."
-          );
+          res.send("Username already taken. Please register with a different one.");
         } else {
           if (userType === "Daddy") {
             return Daddy.create({ username, password, email, userType, membershipLevel });
@@ -37,27 +32,28 @@ class Controller {
         }
       })
       .then((user) => {
+
         if (userType === "Daddy") {
           req.session.user = user;
+          req.session.username = username
         } else {
           req.session.user = user;
+          req.session.username = username
         }
-        res.redirect(`/profile/${foundUser}`);
+        res.redirect('/babies');
       })
       .catch(err => res.render(err))
   }
 
   static login(req, res) {
-    const { credentials, password } = req.body;
-    console.log({credentials, password});
+    const { credentials, password } = req.body
     Daddy.findOne({
       where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
     })
       .then((daddy) => {
         if (daddy && comparePassword(password, daddy.password)) {
           req.session.user = daddy
-          const foundUser = daddy.username
-          res.redirect(`/babies`); //ganti nanti
+          res.redirect(`/babies`);
         } else
           return Baby.findOne({
             where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
@@ -66,36 +62,58 @@ class Controller {
       .then((baby) => {
         if (baby && comparePassword(password, baby.password)) {
           req.session.user = baby
-          res.redirect(`/daddies`); //nanti ganti
+          res.redirect(`/daddies`);
         } else {
           res.send("email or password is incorrect");
         }
       })
-      .catch((err) => res.render(err));
+      .catch(err => res.render(err))
   }
   static showUserProfile(req, res) {
-    const username = req.params.username;
+    const username = req.session.username
+
     Daddy.findOne({
       where: { username },
-      include: [ 
-        { model: DaddyProfile, as: userProfile, include :[ {model: Location} ]}
-      ]})
+      include: [
+        { model: Daddy, required: true },
+        { model: Location, required: true },
+      ],
+    })
       .then((user) => {
-        console.log(user);
-        if (user) res.render("profile", { user });
-        else {
+        if (user) {
+          res.render("profile", { user })
+        } else {
           return Baby.findOne({
             where: { username },
-            include: { all: true, nested: true },
-          });
+            include: [
+              { model: Baby },
+              { model: Location },
+            ],
+          })
         }
       })
       .then((user) => {
-        if (user) res.render("profile", { user });
+        res.render("profile", { user })
       })
-      .catch((err) => res.render(err));
+      .catch(err => res.render(err))
   }
-
+  static deleteUser(req, res) {
+    const username = req.session.username
+    const userType = req.session.user
+    if (userType == 'daddy') {
+      Daddy.destroy({ where: { username } })
+        .then(() => {
+          req.session.destroy();
+          res.redirect("/")
+        })
+    } else if (userType == 'daddy') {
+      Baby.destroy({ where: { username } })
+        .then(() => {
+          req.session.destroy();
+          res.redirect("/")
+        })
+    }
+  }
   static logout(req, res) {
     req.session.destroy();
     res.redirect("/");
