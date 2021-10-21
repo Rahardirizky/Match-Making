@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(attributes) {
         attributes.password = hashPassword(attributes.password)
+        if(!attributes.membershipLevel) attributes.membershipLevel = 'Basic'
       }
     }
   });

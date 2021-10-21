@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       monthlyBudget: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       location: {
         type: Sequelize.STRING

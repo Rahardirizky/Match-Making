@@ -11,11 +11,9 @@ class DaddyController {
       ],
     })
       .then((data) => {
-        console.log(data);
         res.render("daddies", { daddies: data, currencyConverter });
       })
       .catch((err) => {
-        console.log(err);
         res.send(err);
       });
   }

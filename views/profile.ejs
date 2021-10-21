@@ -1,47 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
 </head>
+
 <body>
-<div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon1">@</span>
-    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-  </div>
-  
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-    <span class="input-group-text" id="basic-addon2">@example.com</span>
-  </div>
-  
-  <label for="basic-url" class="form-label">Your vanity URL</label>
-  <div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-  </div>
-  
-  <div class="input-group mb-3">
-    <span class="input-group-text">$</span>
-    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-    <span class="input-group-text">.00</span>
-  </div>
-  
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-    <span class="input-group-text">@</span>
-    <input type="text" class="form-control" placeholder="Server" aria-label="Server">
-  </div>
-  
-  <div class="input-group">
-    <span class="input-group-text">With textarea</span>
-    <textarea class="form-control" aria-label="With textarea"></textarea>
+  <%- include('components/userNavBar', {data:user})%>
+
+  <div class="container">
+    <br>
+    <div class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Full Name</div>
+          <%=user.getFullName%>
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">User Name</div>
+          <%=user.username%>
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Age</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Birth Day</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Gender</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Expected Monthly Allowance</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Location</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">GPS Location</div>
+          xxx
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">About Me</div>
+          xxx
+        </div>
+      </li>
+    </div>
+    <br>
+    <h1 class="display-3 text-center">In a Relationship with</h1>
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="align-middle">User Name</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
+
 </html>

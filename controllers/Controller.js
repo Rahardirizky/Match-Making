@@ -4,7 +4,7 @@ const {
   Baby,
   Location,
   DaddyBaby,
-  BabyProfile
+  BabyProfile,
 } = require("../models/index");
 const { comparePassword } = require("../helpers/bcrypt");
 const e = require("express");
@@ -13,17 +13,21 @@ const { Op } = require("sequelize");
 class Controller {
   static register(req, res) {
     const { username, password, email, userType, membershipLevel } = req.body;
-    const foundUser = username
+    const foundUser = username;
 
     Daddy.findOne({ where: { email } })
       .then((daddy) => {
         if (daddy) {
-          res.send("Username already taken. Please register with a different one.");
+          res.send(
+            "Username already taken. Please register with a different one."
+          );
         } else return Baby.findOne({ where: { email } });
       })
       .then((baby) => {
         if (baby) {
-          res.send("Username already taken. Please register with a different one.");
+          res.send(
+            "Username already taken. Please register with a different one."
+          );
         } else {
           if (userType === "Daddy") {
             return Daddy.create({ username, password, email, userType, membershipLevel });
@@ -33,7 +37,6 @@ class Controller {
         }
       })
       .then((user) => {
-        console.log(user);
         if (userType === "Daddy") {
           req.session.user = user;
         } else {
@@ -54,7 +57,7 @@ class Controller {
         if (daddy && comparePassword(password, daddy.password)) {
           req.session.user = daddy
           const foundUser = daddy.username
-          res.redirect(`/babies`);
+          res.redirect(`/babies`); //ganti nanti
         } else
           return Baby.findOne({
             where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
@@ -63,51 +66,34 @@ class Controller {
       .then((baby) => {
         if (baby && comparePassword(password, baby.password)) {
           req.session.user = baby
-          res.redirect(`/daddies`);
+          res.redirect(`/daddies`); //nanti ganti
         } else {
           res.send("email or password is incorrect");
         }
       })
-      .catch(err => res.render(err))
+      .catch((err) => res.render(err));
   }
   static showUserProfile(req, res) {
-    const username = req.params.username
-    console.log(username, '>>>username dari showuserprofile');
+    const username = req.params.username;
     Daddy.findOne({
       where: { username },
-      include: [
-        {
-          model: DaddyBaby,
-          include: [{ model: Baby }],
-        },
-        {
-          model: DaddyProfile,
-          include: [{ model: Location }],
-        },
-      ],
-    })
-      .then((userDaddy) => {
-        if (userDaddy) res.render("profile", { userDaddy });
+      include: [ 
+        { model: DaddyProfile, as: userProfile, include :[ {model: Location} ]}
+      ]})
+      .then((user) => {
+        console.log(user);
+        if (user) res.render("profile", { user });
         else {
           return Baby.findOne({
             where: { username },
-            include: [
-              {
-                model: DaddyBaby,
-                include: [{ model: Daddy }],
-              },
-              {
-                model: BabyProfile,
-                include: [{ model: Location }],
-              },
-            ],
+            include: { all: true, nested: true },
           });
         }
       })
-      .then((userBaby) => {
-        if (userBaby) res.render("profile", { userBaby });
+      .then((user) => {
+        if (user) res.render("profile", { user });
       })
-      .catch(err => res.render(err))
+      .catch((err) => res.render(err));
   }
 
   static logout(req, res) {

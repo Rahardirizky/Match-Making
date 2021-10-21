@@ -1,58 +1,58 @@
 const currencyConverter = require("../helpers/currency");
-const daddybaby = require("../models/daddybaby");
-const { DaddyProfile, Daddy, Baby, Location, DaddyBaby, BabyProfile } = require("../models/index");
+const {
+  DaddyProfile,
+  Daddy,
+  Baby,
+  Location,
+  DaddyBaby,
+  BabyProfile,
+} = require("../models/index");
 
 class BabyController {
   static getBabyList(req, res) {
-    BabyProfile.findAll({
-      include: [
-        {model: Baby, required: true },
-        {model: Location,required: true},
-      ],
-    })
-      .then((data) => {
-        console.log(data);
-        res.render("babies", { babies: data, currencyConverter });
+    let {allowance} = req.query
+    allowance = allowance == undefined ? 0 : +allowance;
+    BabyProfile.getBabyByAllowance(allowance)
+      .then((babies) => {
+        console.log(babies);
+        res.render("babies", { babies, currencyConverter });
       })
       .catch((err) => {
         console.log(err);
         res.send(err);
       });
   }
-  
-  static findBaby(req, res){
-    let BabyId = req.params.id
-    let baby
-    BabyProfile.findByPk(BabyId, {
+
+  static findBaby(req, res) {
+    let BabyId = req.params.id;
+    let baby;
+    BabyProfile.findOne({
+      where: { BabyId },
       include: [
-        {model: Baby, required: true },
-        {model: Location,required: true},
+        { model: Baby, required: true },
+        { model: Location, required: true },
       ],
-      // include: [
-      //   {model: BabyProfile, required: true ,
-      //     include: [{model: Location,required: true}]},
-      // ],
     })
-    .then((data) => {
-      baby = data
-      return DaddyBaby.findAll({
-        where: {
-          BabyId: baby.Baby.id
-        },
-        include: [{
-          model: Daddy,
-          as: 'daddy',
-          include: [DaddyProfile]
-        }]
+      .then((data) => {
+        baby = data;
+        return DaddyBaby.findAll({
+          where: { BabyId: baby.Baby.id },
+          include: [
+            {
+              model: Daddy,
+              as: "daddy",
+              include: [DaddyProfile],
+            },
+          ],
+        });
       })
-    })
-    .then(daddies => {
-      res.render("babyDetail", { baby, daddies, currencyConverter });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send(err);
-    });
+      .then((daddies) => {
+        res.render("babyDetail", { baby, daddies, currencyConverter });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send(err);
+      });
   }
 
   static chat(req, res) {

@@ -15,11 +15,13 @@ module.exports = (sequelize, DataTypes) => {
       const ultah = new Date(this.dateOfBirth)
       return ultah.toISOString().substr(0, 10)
     }
-    get age() {
-        const today = new Date()
-        const date = new Date(this.dateOfBirth)
-        return today.getFullYear() - date.getFullYear()
+    get showAge() {
+      const today = new Date()
+      const date = new Date(this.dateOfBirth)
+      return today.getFullYear() - date.getFullYear()
     }
+    static show
+
   };
   DaddyProfile.init({
     firstName: DataTypes.STRING,

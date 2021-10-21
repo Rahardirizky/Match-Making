@@ -2,23 +2,32 @@
 const {
   Model
 } = require('sequelize');
+const {Op} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class BabyProfile extends Model {
     static associate(models) {
       BabyProfile.belongsTo(models.Baby)
       BabyProfile.belongsTo(models.Location)
     }
-    get getFullName (){
+    get getFullName() {
       return `${this.firstName} ${this.lastName}`
     }
     get birthday() {
       const ultah = new Date(this.dateOfBirth)
       return ultah.toISOString().substr(0, 10)
     }
-    get age() {
-        const today = new Date()
-        const date = new Date(this.dateOfBirth)
-        return today.getFullYear() - date.getFullYear()
+    get showAge() {
+      const today = new Date()
+      const date = new Date(this.dateOfBirth)
+      return today.getFullYear() - date.getFullYear()
+    }
+    static getBabyByAllowance(allowance) {
+      return new Promise((res, rej) =>{
+        let condition = allowance ? allowance : 0
+        BabyProfile.findAll({ where: {expectedMonthlyAllowance:{[Op.gte]:condition}}, order:[['expectedMonthlyAllowance', 'ASC']] })
+        .then((data) => res(data))
+        .catch((err) => rej(err));
+      })
     }
   };
   BabyProfile.init({
@@ -29,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     gender: DataTypes.STRING,
     shortBio: DataTypes.TEXT,
-    expectedMonthlyAllowance: DataTypes.STRING,
+    expectedMonthlyAllowance: DataTypes.INTEGER,
     gpsLocation: DataTypes.STRING,
     LocationId: DataTypes.INTEGER,
     BabyId: DataTypes.INTEGER,

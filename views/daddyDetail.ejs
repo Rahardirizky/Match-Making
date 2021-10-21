@@ -16,25 +16,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Daddies</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Babies</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <%- include('components/userNavBar', {data: <%=daddy.Daddy%>})%>
   <div class="container">
     <a href="/daddies/<%=daddy.id%>/chat" class="btn btn-warning">Chat</a> <a href="/daddies/<%=daddy.id%>/book" class="btn btn-success">Book</a>
     <div class="list-group">
@@ -53,7 +35,7 @@
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Age</div>
-          <%=daddy.age%>
+          <%=daddy.showAge(daddy.dateOfBirth)%>
         </div>
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-start">
