@@ -34,7 +34,7 @@ class Controller {
           }
         }
       })
-      .then(user => {
+      .then(() => {
         if(userType === 'Daddy') {
           req.session.hasLogin = 'Daddy'
           res.redirect('/babies')
@@ -67,7 +67,7 @@ class Controller {
       .then(baby => {
         if(baby && comparePassword(password, baby.password)) {
           req.session.hasLogin = 'Baby'
-          res.redirect('/babies')
+          res.redirect('/daddies')
         } else {
           res.send('email or password is incorrect')
         }

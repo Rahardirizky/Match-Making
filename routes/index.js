@@ -3,6 +3,7 @@ const daddyRoutes = require('./daddyRoutes')
 const babyRoutes = require('./babyRoutes')
 const Controller = require('../controllers/Controller')
 const e = require('express')
+const authentication = require('../middleware/authentication')
 
 router.get('/', (req, res) => {
   if(req.session.hasLogin === 'Daddy') {
@@ -30,6 +31,7 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 router.post('/login', Controller.login)
+router.use(authentication)
 router.get('/logout', Controller.logout)
 router.get('/profile', (req, res) => res.send('login page gan'))
 router.get('/profile/edit', (req, res) => res.send('login page gan'))
