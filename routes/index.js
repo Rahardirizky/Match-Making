@@ -6,26 +6,26 @@ const e = require('express')
 const authentication = require('../middleware/authentication')
 
 router.get('/', (req, res) => {
-  if(req.session.hasLogin === 'Daddy') {
+  if(req.session.user?.userType === 'Daddy') {
     res.redirect('/babies')
-  } else if (req.session.hasLogin === 'Baby') {
+  } else if (req.session.user?.userType === 'Baby') {
     res.redirect('/daddies')
   }
   res.render('home')
 })
 router.get('/register', (req, res) => {
-  if(req.session.hasLogin === 'Daddy') {
+  if(req.session.user?.userType === 'Daddy') {
     res.redirect('/babies')
-  } else if (req.session.hasLogin === 'Baby') {
+  } else if (req.session.user?.userType === 'Baby') {
     res.redirect('/daddies')
   }
   res.render('registration')
 })
 router.post('/register', Controller.register)
 router.get('/login', (req, res) => {
-  if(req.session.hasLogin === 'Daddy') {
+  if(req.session.user?.userType === 'Daddy') {
     res.redirect('/babies')
-  } else if (req.session.hasLogin === 'Baby') {
+  } else if (req.session.user?.userType === 'Baby') {
     res.redirect('/daddies')
   }
   res.render('login')

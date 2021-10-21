@@ -54,6 +54,17 @@ class BabyController {
       res.send(err);
     });
   }
+
+  static chat(req, res) {
+    const receiver = {
+      userType: 'Baby',
+      id: req.params.id
+    }
+    res.render('babyChat', {
+      sender: req.session.user,
+      receiver
+    })
+  }
 }
 
 module.exports = BabyController;

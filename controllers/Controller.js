@@ -1,4 +1,4 @@
-const {  
+const {
   DaddyProfile,
   Daddy,
   Baby,
@@ -25,87 +25,89 @@ class Controller {
         if (baby) {
           res.send("Username already taken. Please register with a different one.");
         } else {
-          if (userType === "Daddy"){
-            return Daddy.create({username, password, email, userType, membershipLevel});
+          if (userType === "Daddy") {
+            return Daddy.create({ username, password, email, userType, membershipLevel });
           } else {
-            return Baby.create({username, password, email, userType, membershipLevel})
+            return Baby.create({ username, password, email, userType, membershipLevel })
           }
         }
       })
-      .then(() => {
+      .then((user) => {
+        console.log(user);
         if (userType === "Daddy") {
-          req.session.hasLogin = "Daddy";
+          req.session.user = user;
         } else {
-          req.session.hasLogin = "Baby";
+          req.session.user = user;
         }
         res.redirect(`/profile/${foundUser}`);
       })
-      .catch(err=> res.render(err))
+      .catch(err => res.render(err))
   }
 
   static login(req, res) {
     const { credentials, password } = req.body;
+    console.log({credentials, password});
     Daddy.findOne({
       where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
     })
       .then((daddy) => {
         if (daddy && comparePassword(password, daddy.password)) {
-          req.session.hasLogin = "Daddy"
-           const foundUser = daddy.username
-          res.redirect(`/profile/${foundUser}`);
+          req.session.user = daddy
+          const foundUser = daddy.username
+          res.redirect(`/babies`);
         } else
           return Baby.findOne({
-            where: {[Op.or]: [{ email: credentials }, { username: credentials }]},
+            where: { [Op.or]: [{ email: credentials }, { username: credentials }] },
           });
       })
       .then((baby) => {
         if (baby && comparePassword(password, baby.password)) {
-          req.session.hasLogin = "Baby";
+          req.session.user = baby
           res.redirect(`/daddies`);
         } else {
           res.send("email or password is incorrect");
         }
       })
-      .catch(err=> res.render(err))
+      .catch(err => res.render(err))
   }
   static showUserProfile(req, res) {
-    const username  = req.params.username
-    console.log(username,'>>>username dari showuserprofile');
+    const username = req.params.username
+    console.log(username, '>>>username dari showuserprofile');
     Daddy.findOne({
       where: { username },
       include: [
         {
           model: DaddyBaby,
-          include: [{ model: Baby}],
+          include: [{ model: Baby }],
         },
         {
           model: DaddyProfile,
-          include: [{ model: Location}],
+          include: [{ model: Location }],
         },
       ],
     })
-    .then((userDaddy) => {
-      if (userDaddy) res.render("profile", { userDaddy });
-      else {
-        return Baby.findOne({
-          where: { username },
-          include: [
-            {
-              model: DaddyBaby,
-              include: [{ model: Daddy}],
-            },
-            {
-              model: BabyProfile,
-              include: [{ model: Location}],
-            },
-          ],
-        });
-      }
-    })
-    .then ((userBaby)=>{
-      if (userBaby) res.render("profile", { userBaby });
-    })
-    .catch(err=> res.render(err))
+      .then((userDaddy) => {
+        if (userDaddy) res.render("profile", { userDaddy });
+        else {
+          return Baby.findOne({
+            where: { username },
+            include: [
+              {
+                model: DaddyBaby,
+                include: [{ model: Daddy }],
+              },
+              {
+                model: BabyProfile,
+                include: [{ model: Location }],
+              },
+            ],
+          });
+        }
+      })
+      .then((userBaby) => {
+        if (userBaby) res.render("profile", { userBaby });
+      })
+      .catch(err => res.render(err))
   }
 
   static logout(req, res) {

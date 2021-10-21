@@ -12,8 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       return `${this.firstName} ${this.lastName}`
     }
     get birthday() {
-      const ultah = new Date(this.dateOfBirth).toISOString().substr(0, 10)
-      return ultah
+      const ultah = new Date(this.dateOfBirth)
+      return ultah.toISOString().substr(0, 10)
+    }
+    get age() {
+        const today = new Date()
+        const date = new Date(this.dateOfBirth)
+        return today.getFullYear() - date.getFullYear()
     }
   };
   DaddyProfile.init({
@@ -21,12 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     lastName: DataTypes.STRING,
     dateOfBirth: {
       type: DataTypes.DATE,
-      get(field){
-        const value = this.getDataValue(field)
-        const today = new Date()
-        const date = new Date(value)
-        return today.getFullYear() - date.getFullYear()
-      }
     },
     gender: DataTypes.STRING,
     shortBio: DataTypes.TEXT,

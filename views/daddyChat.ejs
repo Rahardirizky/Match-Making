@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babies</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/babies">Babies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/logout">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <h1 class="display-3 text-center">Chat</h1>
+  <div class="row">
+    <div class="col mb-3">
+      <input type="text" class="form-control" id='inputChat'>
+    </div>
+    <div class="col mb-3">
+      <button id='button' class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+  <ul class="list-group" id='chat'>
+    <li class="list-group-item">Start Chat</li>
+  </ul>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    const button = document.getElementById('button');
+    const chat = document.getElementById('chat');
+    const addChat = (message) => {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item');
+      li.textContent = message;
+      chat.appendChild(li);
+    }
+
+    button.addEventListener('click', () => {
+      const input = document.getElementById('inputChat').value;
+      document.getElementById('inputChat').value = ''
+      addChat(input)
+      socket.emit('chat message', { userType: "<%=receiver.userType%>", id: "<%=receiver.id%>", username: "<%=sender.username%>", msg: input })
+    });
+
+    socket.on(`chat ${'<%=sender.userType%>'} ${'<%=sender.id%>'}`, (message) => {
+      addChat(message)
+      window.scrollTo(0, document.body.scrollHeight);
+    })
+  </script>
+</body>
+</html>

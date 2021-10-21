@@ -36,7 +36,7 @@
     </div>
   </nav>
   <div class="container">
-    <a href="/babies/#/chat" class="btn btn-warning">Chat</a> <a href="/babies/#/book" class="btn btn-success">Book</a>
+    <a href="/daddies/<%=daddy.id%>/chat" class="btn btn-warning">Chat</a> <a href="/daddies/<%=daddy.id%>/book" class="btn btn-success">Book</a>
     <div class="list-group">
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
@@ -53,7 +53,7 @@
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
           <div class="fw-bold">Age</div>
-          <%=daddy.dateOfBirth%>
+          <%=daddy.age%>
         </div>
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-start">

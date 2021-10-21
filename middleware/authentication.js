@@ -1,7 +1,7 @@
 
 function authentication(req, res, next) {
-  const hasLogin = req.session.hasLogin
-  if(hasLogin) {
+  const user = req.session.user
+  if(user) {
     next()
   } else {
     res.redirect('/')

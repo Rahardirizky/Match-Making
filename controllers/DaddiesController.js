@@ -3,6 +3,7 @@ const { DaddyProfile, Daddy, Baby, Location, DaddyBaby, BabyProfile } = require(
 
 class DaddyController {
   static getDaddyList(req, res) {
+    console.log(req.session);
     DaddyProfile.findAll({
       include: [
         {model: Daddy, required: true },
@@ -52,6 +53,17 @@ class DaddyController {
       console.log(err);
       res.send(err);
     });
+  }
+
+  static chat(req, res) {
+    const receiver = {
+      userType: 'Daddy',
+      id: req.params.id
+    }
+    res.render('daddyChat', {
+      sender: req.session.user,
+      receiver
+    })
   }
 }
 
