@@ -44,20 +44,22 @@
           <th scope="col" class="align-middle">User Name</th>
           <th scope="col" class="align-middle">Full Name</th>
           <th scope="col" class="align-middle">Age</th>
-          <th scope="col" class="align-middle">Expected Allowance</th>
+          <th scope="col" class="align-middle">Monthly Budget</th>
           <th scope="col" class="align-middle">Location</th>
           <th scope="col" class="align-middle">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="align-middle">(show username)</td>
-          <td class="align-middle">(show fullname)</td>
-          <td class="align-middle">(show age)</td>
-          <td class="align-middle">(show expected allowance)</td>
-          <td class="align-middle">(show area)</td>
-          <td class="align-middle"><a type="button" class="btn btn-secondary" href="/daddies/#">See Profile</a></td>
-        </tr>
+        <%daddies.forEach(el => { %>
+          <tr>
+              <td class="align-middle"><%=el.Daddy.username%></td>
+              <td class="align-middle"><%=el.getFullName%></td>
+              <td class="align-middle"><%=el.dateOfBirth%></td>
+              <td class="align-middle"><%=currencyConverter(el.monthlyBudget)%></td>
+              <td class="align-middle"><%=el.Location.name%></td>
+              <td class="align-middle"><a type="button" class="btn btn-secondary" href="/daddies/<%=el.id%>">See Profile</a></td>
+          </tr>
+        <%})%>
       </tbody>
     </table>
   </div>

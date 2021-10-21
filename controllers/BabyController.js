@@ -1,5 +1,6 @@
 const currencyConverter = require("../helpers/currency");
-const { BabyProfile, Daddy, Baby, Location } = require("../models/index");
+const daddybaby = require("../models/daddybaby");
+const { DaddyProfile, Daddy, Baby, Location, DaddyBaby, BabyProfile } = require("../models/index");
 
 class BabyController {
   static getBabyList(req, res) {
@@ -20,16 +21,33 @@ class BabyController {
   }
   
   static findBaby(req, res){
-    let babyId = req.params.id
-    Baby.findByPk(babyId, {
+    let BabyId = req.params.id
+    let baby
+    BabyProfile.findByPk(BabyId, {
       include: [
-        {model: BabyProfile, required: true ,
-          include: [{model: Location,required: true}]},
+        {model: Baby, required: true },
+        {model: Location,required: true},
       ],
+      // include: [
+      //   {model: BabyProfile, required: true ,
+      //     include: [{model: Location,required: true}]},
+      // ],
     })
-    .then((baby) => {
-      console.log(baby);
-      res.render("babyDetail", { baby, currencyConverter });
+    .then((data) => {
+      baby = data
+      return DaddyBaby.findAll({
+        where: {
+          BabyId: baby.Baby.id
+        },
+        include: [{
+          model: Daddy,
+          as: 'daddy',
+          include: [DaddyProfile]
+        }]
+      })
+    })
+    .then(daddies => {
+      res.render("babyDetail", { baby, daddies, currencyConverter });
     })
     .catch((err) => {
       console.log(err);

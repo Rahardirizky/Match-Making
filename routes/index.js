@@ -33,9 +33,9 @@ router.get('/login', (req, res) => {
 router.post('/login', Controller.login)
 router.use(authentication)
 router.get('/logout', Controller.logout)
-router.get('/profile', (req, res) => res.send('login page gan'))
-router.get('/profile/edit', (req, res) => res.send('login page gan'))
-router.post('/profile/edit', (req, res) => res.send('login page gan'))
+router.get('/profile/:username', (req, res) => res.send('login page gan'))
+router.get('/profile/:username/edit', (req, res) => res.send('login page gan'))
+router.post('/profile/:username/edit', (req, res) => res.send('login page gan'))
 
 router.use("/daddies", daddyRoutes)
 router.use("/babies", babyRoutes)

@@ -6,6 +6,14 @@ module.exports = (sequelize, DataTypes) => {
   class DaddyProfile extends Model {
     static associate(models) {
       DaddyProfile.belongsTo(models.Daddy)
+      DaddyProfile.belongsTo(models.Location)
+    }
+    get getFullName (){
+      return `${this.firstName} ${this.lastName}`
+    }
+    get birthday() {
+      const ultah = new Date(this.dateOfBirth).toISOString().substr(0, 10)
+      return ultah
     }
   };
   DaddyProfile.init({
