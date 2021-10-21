@@ -1,20 +1,20 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
+const {hashPassword} = require('../helpers/bcrypt')
+
 module.exports = (sequelize, DataTypes) => {
   class Daddy extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Daddy.hasOne(models.DaddyProfile)
+      Daddy.belongsToMany(models.Baby, {
+        through: "DaddyBabies",
+        as: "Babies",
+        foreignKey: "DaddyId",
+      });
     }
   };
   Daddy.init({
-    usernamme: DataTypes.STRING,
+    username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     userType: DataTypes.STRING,
@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Daddy',
+    hooks: {
+      beforeCreate(attributes) {
+        attributes.password = hashPassword(attributes.password)
+      }
+    }
   });
   return Daddy;
 };

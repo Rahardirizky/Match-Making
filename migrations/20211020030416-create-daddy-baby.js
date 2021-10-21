@@ -8,11 +8,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      SugarDaddyId: {
-        type: Sequelize.INTEGER
+      DaddyId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model : {
+            tableName: 'Daddies'
+          }, key:"id"
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
-      SugarBabyId: {
-        type: Sequelize.INTEGER
+      BabyId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model : {
+            tableName: 'Babies'
+          }, key:"id"
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,

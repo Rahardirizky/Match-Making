@@ -2,19 +2,20 @@
 const {
   Model
 } = require('sequelize');
+const {hashPassword} = require('../helpers/bcrypt')
 module.exports = (sequelize, DataTypes) => {
   class Baby extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Baby.hasOne(models.BabyProfile)
+      Baby.belongsToMany(models.Daddy, {
+        through: "DaddyBabies",
+        as: "Daddies",
+        foreignKey: "BabyId",
+      });
     }
   };
   Baby.init({
-    usernamme: DataTypes.STRING,
+    username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     userType: DataTypes.STRING,
@@ -22,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Baby',
+    hooks: {
+      beforeCreate(attributes) {
+        attributes.password = hashPassword(attributes.password)
+      }
+    }
   });
   return Baby;
 };
