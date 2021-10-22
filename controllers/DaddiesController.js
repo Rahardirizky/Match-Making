@@ -20,7 +20,7 @@ class DaddyController {
   static findDaddy(req, res){
     let DaddyId = req.params.id
     let daddy
-    BabyProfile.findOne({
+    DaddyProfile.findOne({
       where: { DaddyId },
       include: [
         { model: Daddy, required: true },

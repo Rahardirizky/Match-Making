@@ -36,11 +36,13 @@ class Controller {
         if (userType === "Daddy") {
           req.session.user = user;
           req.session.username = username
+          res.redirect('/babies');
         } else {
           req.session.user = user;
           req.session.username = username
+          res.redirect('/daddies');
         }
-        res.redirect('/babies');
+        
       })
       .catch(err => res.render(err))
   }

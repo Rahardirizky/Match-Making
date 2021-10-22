@@ -39,7 +39,7 @@
   </nav>
   <br>
   <div class="container">
-    <a href="/babies/<%=baby.id%>/chat" class="btn btn-warning">Chat</a> <a href="/babies/<%=baby.id%>/book" class="btn btn-success">Book</a>
+    <a href="/babies/<%=baby.id%>/chat" class="btn btn-warning">Chat</a> <a href="/babies/" class="btn btn-success">Back</a>
     <br><br>
     <div class="list-group">
       <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -98,25 +98,6 @@
       </li>
     </div>
     <br>
-    <h1 class="display-3 text-center">In a Relationship with</h1>
-    <div class="container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col" class="align-middle">User Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%daddies.forEach(el=> { %>
-            <tr>
-              <td class="align-middle">
-                <%=el.username%>
-              </td>
-            </tr>
-            <%})%>
-        </tbody>
-      </table>
-    </div>
   </div>
 </body>
 
